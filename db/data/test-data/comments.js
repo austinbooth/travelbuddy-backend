@@ -1,13 +1,13 @@
 module.exports = [
   {
-    time_stamp: "1586549847",
+    time_stamp: "1586549847000",
     body: "body for comment 1 for experience 1",
     likes: "1",
     username: "user_b",
     belongs_to_title: "experience 1",
   },
   {
-    time_stamp: "1594549847",
+    time_stamp: "1594549847000",
     body: "body for comment 2 for experience 1",
     likes: "5",
     username: "user_c",
@@ -15,7 +15,7 @@ module.exports = [
   },
 
   {
-    time_stamp: "1574549847",
+    time_stamp: "1574549847000",
     body: "body for comment 1 for experience 2",
     likes: "1",
     username: "user_a",
@@ -23,14 +23,14 @@ module.exports = [
   },
 
   {
-    time_stamp: "1578858463",
+    time_stamp: "1578858463000",
     body: "body for comment 1 for experience 3",
     likes: "1",
     username: "user_a",
     belongs_to_title: "experience 1",
   },
   {
-    time_stamp: "1582858463",
+    time_stamp: "1582858463000",
     body: "body for comment 2 for experience 3",
     likes: "5",
     username: "user_b",
@@ -38,7 +38,7 @@ module.exports = [
   },
 
   {
-    time_stamp: "1576889475",
+    time_stamp: "1576889475000",
     body: "body for comment 1 for experience 4",
     likes: "1",
     username: "user_b",
@@ -46,14 +46,14 @@ module.exports = [
   },
 
   {
-    time_stamp: "1586866595",
+    time_stamp: "1586866595000",
     body: "body for comment 1 for experience 5",
     likes: "1",
     username: "user_b",
     belongs_to_title: "experience 4",
   },
   {
-    time_stamp: "1589886795",
+    time_stamp: "1589886795000",
     body: "body for comment 1 for experience 5",
     likes: "1",
     username: "user_b",
