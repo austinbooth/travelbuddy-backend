@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/austinbooth/travelbuddy-backend/issues"
   },
-  "homepage": "https://github.com/austinbooth/travelbuddy-backend#readme"
+  "homepage": "https://github.com/austinbooth/travelbuddy-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.21.5",
+    "pg": "^8.3.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.13",
+    "jest": "^26.4.2"
+  }
 }
