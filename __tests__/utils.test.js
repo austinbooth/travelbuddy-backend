@@ -27,7 +27,7 @@ describe("formatDates", () => {
     const expectedDate0 = new Date(created_at0);
     const expectedDate1 = new Date(created_at1);
     const output = formatDates(input);
-    console.log(expectedDate0, expectedDate1, Date.now());
+
     expect(output.length).toBe(2);
     expect(output[0].created_at).toEqual(expectedDate0);
     expect(output[1].created_at).toEqual(expectedDate1);
