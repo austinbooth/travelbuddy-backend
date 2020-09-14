@@ -7,3 +7,11 @@ exports.formatDates = (arr) => {
   });
   return reformattedArr;
 }
+
+exports.makeRefObj = (arr, prop, value) => {
+  const refObj = {};
+  arr.forEach(item => {
+    refObj[item[prop]] = item[value]; 
+  })
+  return refObj;
+}
