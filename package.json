@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup-dbs": "psql -f ./db/setup.sql",
     "test": "jest --watch"
   },
   "repository": {
