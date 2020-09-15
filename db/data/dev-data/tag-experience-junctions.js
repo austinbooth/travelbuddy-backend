@@ -118,7 +118,7 @@ module.exports = [
     belongs_to_experience_title: "hang out with the dead in style",
   },
   {
-    tag_text: "#outdoorExperienc",
+    tag_text: "#outdoorExperience",
     belongs_to_experience_title: "hang out with the dead in style",
   },
   {
