@@ -2,7 +2,11 @@ exports.up = function (knex) {
   return knex.schema.createTable("images", (imagesTable) => {
     imagesTable.increments("image_id").primary().notNullable();
     imagesTable.string("image_desc");
-    imagesTable.string("belongs_to_title").references("experiences.title").notNullable();
+    imagesTable
+      .integer("experience_id")
+      .references("experiences.experience_id")
+      .notNullable()
+      .onDelete("CASCADE");
   });
 };
 
