@@ -177,7 +177,6 @@ describe("formatComments", () => {
     const expectedCreatedAt = new Date(comment[0].created_at);
     const expectedOutput = [
       {
-        comment_id: 1,
         created_at: expectedCreatedAt,
         body: "body for comment 1 for experience 2",
         likes: "1",

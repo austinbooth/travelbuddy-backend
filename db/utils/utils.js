@@ -18,16 +18,8 @@ exports.makeRefObj = (arr, prop, value) => {
 
 exports.formatComments = (comments, experienceRefObj) => {
   const comments_with_article_ids = comments.map((comment) => {
-    const {
-      comment_id,
-      created_at,
-      body,
-      likes,
-      username,
-      belongs_to_title,
-    } = comment;
+    const { created_at, body, likes, username, belongs_to_title } = comment;
     return {
-      comment_id,
       created_at,
       body,
       likes,
