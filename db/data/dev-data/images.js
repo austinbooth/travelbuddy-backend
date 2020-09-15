@@ -1,85 +1,88 @@
-module.exports = [
-  {
-    image_desc: "man juggling kittens",
+module.exports = [{
+    image_desc: "a street performer raises his hat as he addresses his audience",
     belongs_to_title: "Fab place to watch street performers",
-    references_image: "",
+    references_image: "streetPerformer.jpg",
   },
   {
-    image_desc: "close up of beads on a stall",
+    image_desc: "two customers stand in front of a stall piled with salami",
     belongs_to_title: "Really cute craft market.",
-    references_image: "",
+    references_image: "marketStall.jpg",
   },
   {
-    image_desc: "front entrance of the Yorvik centre",
+    image_desc: "tourists stand listening intently to a speaker out of shot",
     belongs_to_title: "Free history lesson outside the Yorvik centre.",
-    references_image: "",
+    references_image: "historyQueue.jpg",
   },
   {
-    image_desc: "girl dancing wearing headphones",
+    image_desc: "a DJ wearing headphones has her back to us as she uses her decs to mix music",
     belongs_to_title: "Murder at the silent disco!",
-    references_image: "",
+    references_image: "silentDisco.jpg",
   },
   {
-    image_desc: "two girls pose in front of a flower bed",
+    image_desc: "a girl looks at her phone screen which displays another girl standing behind directing her phone at the back of the first girl. They are surrounded by trees and autumn leaves",
     belongs_to_title: "Great place for photographs",
-    references_image: "",
+    references_image: "parkSelfies.jpg",
   },
   {
-    image_desc: "family sits around a camp fire at night",
+    image_desc: "a hand deposits wood into a fire burning in a metal container. Sounding is a forest setting",
     belongs_to_title: "Free outdoor cooking.",
-    references_image: "",
+    references_image: "firePit.jpg",
   },
   {
-    image_desc: "cat sitting outside York Minster",
+    image_desc: "a ginger and white cat sits upon a grave-stone as a hand reaches to scratch the cat's head",
     belongs_to_title: "Cat heaven!",
-    references_image: "",
+    references_image: "minsterCat.jpg",
   },
   {
-    image_desc: "man and child stand holding spray paint cans",
+    image_desc: "in the foreground stand a number of used spray paint can of various colours. In the background a man, wearing a breathing mask, applies paint from a spray can onto a bright blue canvas",
     belongs_to_title: "Graffiti workshop",
-    references_image: "",
+    references_image: "graffitiWorkshop01.jpg",
   },
   {
-    image_desc: "spray painted picture of a name",
+    image_desc: "a man, wearing a breathing mask, is spraying paint onto a painting of a bright yellow flower",
     belongs_to_title: "Graffiti workshop",
-    references_image: "",
+    references_image: "graffitiWorkshop02.jpg",
   },
 
   //PARIS
 
   {
-    image_desc: "Pont de Bir-hakeim at night",
+    image_desc: "Pont de Bir-hakeim bridge lit with lights sits in front of the paris skyline at dusk",
     belongs_to_title: "WAY COOL BRIDGE",
-    references_image: "",
+    references_image: "bridgeAtNight.jpg",
   },
   {
-    image_desc: "a couple share a picnic on a bench in the park",
+    image_desc: "a wide angle view across a park, showing trees, grass and a number of people lying alone or in small groups on the grass",
     belongs_to_title: "Best place for a picnic",
-    references_image: "",
+    references_image: "parisPicnic.jpg",
   },
   {
-    image_desc: "a bottle of wine sits on a barrel next to two wine glasses",
+    image_desc: "six bottles of wine stand in a group, each with a small label with price attached. In the background is a blurred image of shelves filled with bottles of wine. ",
     belongs_to_title: "wine tasting in an underground cellar",
-    references_image: "",
+    references_image: "wineShop.jpg",
   },
   {
-    image_desc: "view across a grave yard with tombs and statues",
+    image_desc: "view down the path at a grave yard with tombs and statues lining either side",
     belongs_to_title: "hang out with the dead in style",
-    references_image: "",
+    references_image: "parisGraves01.jpg",
+  }, {
+    image_desc: "a small statue of an angle sits atop a grave, as the dappled light peaks through the tress to illuminate a small metal plaque baring an inscription",
+    belongs_to_title: "hang out with the dead in style",
+    references_image: "parisGraves02.jpg",
   },
   {
-    image_desc: "outside of the Pompidou Centre",
+    image_desc: "a view showing a medium close up of the outside of the Pompidou Centre. The building is enveloped in external clear tubes and metal scaffolding",
     belongs_to_title: "people watching in style",
-    references_image: "",
+    references_image: "pompidouCentre.jpg",
   },
   {
-    image_desc: "brightly coloured mural on the side of a bilding",
+    image_desc: "a medium shot of a stone wall, upon which are three repeated images of mickey-mouse's head (in the first image half his head coloured in blue, then the second white, then finally, in the third image, red, in replica of the French flag) imposed upon each of the mickey images is that of a black and white a small girl seeming to screen print the mickey heads onto the wall. ",
     belongs_to_title: "cool street art",
-    references_image: "",
+    references_image: "parisStreetArt.jpg",
   },
   {
-    image_desc: "cafe table on balcony at the Louvre Museum",
+    image_desc: "view of the internal courtyard at the Louvre Gallery, showing pale sand stone buildings surrounding a large courtyard of pale stone wide paths",
     belongs_to_title: "luxury lunch like a Queen",
-    references_image: "",
+    references_image: "louvreCourtyard.jpg",
   },
 ];
