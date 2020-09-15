@@ -41,33 +41,3 @@ exports.formatComments = (comments, experienceRefObj) => {
   );
   return correctlyFormattedComments;
 };
-
-exports.formatsExperiences = (experiences, tagsRefObj) => {
-  const experiencesWithoutBelongsToTagText = experiences.map((experience) => {
-    const {
-      experience_id,
-      title,
-      body,
-      username,
-      created_at,
-      location_lat,
-      location_long,
-      likes,
-    } = experience;
-    return {
-      experience_id,
-      title,
-      body,
-      username,
-      created_at,
-      location_lat,
-      location_long,
-      likes,
-    };
-  });
-
-  const experiencesWithReformattedDates = this.formatDates(
-    experiencesWithoutBelongsToTagText
-  );
-  return experiencesWithReformattedDates;
-};
