@@ -101,7 +101,7 @@ module.exports = [{
     location_lat: 53.961093,
     location_long: -1.080641,
     likes: 0,
-    belongs_to_tag_text: '#YOLO',
+    'belongs_to_tag_text': '#YOLO',
   },
 
 
