@@ -1,4 +1,8 @@
-const { formatDates, makeRefObj } = require("../db/utils/utils");
+const {
+  formatDates,
+  makeRefObj,
+  formatComments,
+} = require("../db/utils/utils");
 
 describe("formatDates", () => {
   test("returns a new array and object", () => {
@@ -120,5 +124,79 @@ describe("makeRefObj", () => {
       "experience 8": 10,
     };
     expect(makeRefObj(input, "title", "experience_id")).toEqual(expectedOutput);
+  });
+});
+
+describe("formatExperiences", () => {
+  test("works for a single experience, and does not mutate the original experience", () => {
+    const experiences = [
+      {
+        experience_id: 2,
+        title: "experience 2",
+        body: "body for experience 2",
+        username: "user_a",
+        created_at: 1564856463,
+        location_lat: 53.959974,
+        location_long: -1.08025,
+        likes: 10,
+      },
+      {
+        experience_id: 5,
+        title: "experience 5",
+        body: "body for experience 5",
+        username: "user_b",
+        created_at: 1584856563,
+        location_lat: 53.958061,
+        location_long: -1.092227,
+        likes: 20,
+      },
+      {
+        experience_id: 10,
+        title: "experience 8",
+        body: "body for experience 10",
+        username: "user_c",
+        created_at: 1584856563,
+        location_lat: 53.958061,
+        location_long: -1.092227,
+        likes: 15,
+      },
+    ];
+    comment = [
+      {
+        comment_id: 1,
+        created_at: 1586549847000,
+        body: "body for comment 1 for experience 2",
+        likes: "1",
+        username: "user_b",
+        belongs_to_title: "experience 2",
+      },
+    ];
+
+    const experienceRefObj = makeRefObj(experiences, "title", "experience_id");
+    const expectedCreatedAt = new Date(comment[0].created_at);
+    const expectedOutput = [
+      {
+        comment_id: 1,
+        created_at: expectedCreatedAt,
+        body: "body for comment 1 for experience 2",
+        likes: "1",
+        username: "user_b",
+        experience_id: 2,
+      },
+    ];
+    const output = formatComments(comment, experienceRefObj);
+    expect(Array.isArray(output)).toBe(true);
+    expect(output).toEqual(expectedOutput);
+    expect(output).not.toBe(expectedOutput);
+    expect(comment).toEqual([
+      {
+        comment_id: 1,
+        created_at: 1586549847000,
+        body: "body for comment 1 for experience 2",
+        likes: "1",
+        username: "user_b",
+        belongs_to_title: "experience 2",
+      },
+    ]);
   });
 });
