@@ -2,6 +2,7 @@ const {
   formatDates,
   makeRefObj,
   formatComments,
+  formatsExperiences,
 } = require("../db/utils/utils");
 
 describe("formatDates", () => {
@@ -127,8 +128,8 @@ describe("makeRefObj", () => {
   });
 });
 
-describe("formatExperiences", () => {
-  test("works for a single experience, and does not mutate the original experience", () => {
+describe("formatComments", () => {
+  test("works for a single comment, and does not mutate the original comment", () => {
     const experiences = [
       {
         experience_id: 2,
@@ -196,6 +197,62 @@ describe("formatExperiences", () => {
         likes: "1",
         username: "user_b",
         belongs_to_title: "experience 2",
+      },
+    ]);
+  });
+});
+
+describe("formatsExperiences", () => {
+  test("works for a single experience, and does not mutate the original experience", () => {
+    const experience = [
+      {
+        experience_id: 2,
+        title: "experience 2",
+        body: "body for experience 2",
+        username: "user_a",
+        created_at: 1564856463,
+        location_lat: 53.959974,
+        location_long: -1.08025,
+        likes: 10,
+        belongs_to_tag_text: "tag_1",
+      },
+    ];
+    const tags = [
+      { tag_id: 1, tag_text: "tag_1" },
+      { tag_id: 2, tag_text: "tag_2" },
+      { tag_id: 3, tag_text: "tag_3" },
+      { tag_id: 4, tag_text: "tag_4" },
+      { tag_id: 5, tag_text: "tag_5" },
+    ];
+    const tagsRefObj = makeRefObj(tags, "tag_text", "tag_id");
+    const expectedCreatedAt = new Date(experience[0].created_at);
+    const expectedOutput = [
+      {
+        experience_id: 2,
+        title: "experience 2",
+        body: "body for experience 2",
+        username: "user_a",
+        created_at: expectedCreatedAt,
+        location_lat: 53.959974,
+        location_long: -1.08025,
+        likes: 10,
+      },
+    ];
+    const output = formatsExperiences(experience, tagsRefObj);
+    expect(Array.isArray(output)).toBe(true);
+    expect(output).toEqual(expectedOutput);
+    expect(output).not.toBe(expectedOutput);
+    expect(experience).toEqual([
+      {
+        experience_id: 2,
+        title: "experience 2",
+        body: "body for experience 2",
+        username: "user_a",
+        created_at: 1564856463,
+        location_lat: 53.959974,
+        location_long: -1.08025,
+        likes: 10,
+        belongs_to_tag_text: "tag_1",
       },
     ]);
   });
