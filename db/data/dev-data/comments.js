@@ -4,7 +4,7 @@ module.exports = [
     body: "great place to get street food too!",
     likes: 10,
     username: "burt1943",
-    belongs_to_title: "Fab place to watch street performers",
+    belongs_to_title: "Fab place to watch street performers.",
   },
   {
     created_at: 1588414365582,
@@ -47,14 +47,14 @@ module.exports = [
     body: "fountains are ace!",
     likes: 1,
     username: "tillRitzy",
-    belongs_to_title: "Great place for photographs",
+    belongs_to_title: "Great place for photographs.",
   },
   {
     created_at: 1574371945985,
     body: "even pretty in winter.",
     likes: 2,
     username: "bookTrain",
-    belongs_to_title: "Great place for photographs",
+    belongs_to_title: "Great place for photographs.",
   },
   {
     created_at: 1584827652451,
@@ -148,7 +148,7 @@ module.exports = [
     created_at: 1574371944545,
     body: "THERE'S NOWHERE TO SIT HERE BUT THE FLOOR",
     likes: 2,
-    username: "#music",
+    username: "bookTrain",
     belongs_to_title: "people watching in style",
   },
   {
