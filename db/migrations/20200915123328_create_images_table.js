@@ -7,6 +7,7 @@ exports.up = function (knex) {
       .references("experiences.experience_id")
       .notNullable()
       .onDelete("CASCADE");
+    imagesTable.string("image_URL").notNullable();
   });
 };
 
