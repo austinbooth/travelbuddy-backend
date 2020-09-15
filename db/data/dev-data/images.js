@@ -2,7 +2,7 @@ module.exports = [
   {
     image_desc:
       "a street performer raises his hat as he addresses his audience",
-    belongs_to_title: "Fab place to watch street performers",
+    belongs_to_title: "Fab place to watch street performers.",
     image_URL: "streetPerformer.jpg",
   },
   {
@@ -24,7 +24,7 @@ module.exports = [
   {
     image_desc:
       "a girl looks at her phone screen which displays another girl standing behind directing her phone at the back of the first girl. They are surrounded by trees and autumn leaves",
-    belongs_to_title: "Great place for photographs",
+    belongs_to_title: "Great place for photographs.",
     image_URL: "parkSelfies.jpg",
   },
   {
@@ -68,7 +68,7 @@ module.exports = [
   },
   {
     image_desc:
-      "six bottles of wine stand in a group, each with a small label with price attached. In the background is a blurred image of shelves filled with bottles of wine. ",
+      "six bottles of wine stand in a group, each with a small label with price attached. In the background is a blurred image of shelves filled with bottles of wine.",
     belongs_to_title: "wine tasting in an underground cellar",
     image_URL: "wineShop.jpg",
   },
@@ -92,7 +92,7 @@ module.exports = [
   },
   {
     image_desc:
-      "a medium shot of a stone wall, upon which are three repeated images of mickey-mouse's head (in the first image half his head coloured in blue, then the second white, then finally, in the third image, red, in replica of the French flag) imposed upon each of the mickey images is that of a black and white a small girl seeming to screen print the mickey heads onto the wall. ",
+      "a wall upon which three repeated images of mickey-mouse's head (in each half his head is coloured in blue, white and red, in replica of the French flag) imposed upon each of image is a black and white girl screen printing the images onto the wall",
     belongs_to_title: "cool street art",
     image_URL: "parisStreetArt.jpg",
   },
