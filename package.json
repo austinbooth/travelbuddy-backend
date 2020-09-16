@@ -4,7 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup-dbs": "psql -f ./db/setup.sql",
+    "seed": "knex seed:run",
+    "seed-test": "NODE_ENV=test knex seed:run",
+    "migrate-latest": "knex migrate:latest",
+    "migrate-rollback": "knex migrate:rollback",
+    "migrate-latest-test": "NODE_ENV=test knex migrate:latest",
+    "migrate-rollback-test": "NODE_ENV=test knex migrate:rollback",
+    "test": "jest --watch",
+    "start": "nodemon listen.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +24,20 @@
   "bugs": {
     "url": "https://github.com/austinbooth/travelbuddy-backend/issues"
   },
-  "homepage": "https://github.com/austinbooth/travelbuddy-backend#readme"
+  "homepage": "https://github.com/austinbooth/travelbuddy-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0",
+    "knex": "^0.21.5",
+    "pg": "^8.3.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.13",
+    "@types/knex": "^0.16.1",
+    "@types/supertest": "^2.0.10",
+    "jest": "^26.4.2",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  }
 }
