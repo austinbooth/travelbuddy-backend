@@ -22,6 +22,18 @@ const ExperienceType = new GraphQLObjectType({
   }),
 });
 
+const CommentType = new GraphQLObjectType({
+  name: "Comments",
+  fields: () => ({
+    comment_id: { type: GraphQLID },
+    created_at: { type: GraphQLString },
+    body: { type: GraphQLString },
+    likes: { type: GraphQLInt },
+    username: { type: GraphQLString },
+    experience_id: { type: GraphQLID },
+  }),
+});
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -39,6 +51,16 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(ExperienceType),
       resolve() {
         return db("experiences").then((experiences) => experiences);
+      },
+    },
+    comments: {
+      type: new GraphQLList(CommentType),
+      args: { experience_id: { type: GraphQLID } },
+      resolve(parent, args) {
+        const { experience_id } = args;
+        return db("comments")
+          .where("experience_id", experience_id)
+          .then((comments) => comments);
       },
     },
   },
