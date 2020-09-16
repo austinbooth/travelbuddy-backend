@@ -13,7 +13,7 @@ module.exports = [
   {
     image_desc: "tourists stand listening intently to a speaker out of shot",
     belongs_to_title: "Free history lesson outside the Yorvik centre.",
-    image_URL: "https://firebasestorage.googleapis.com/v0/b/travel-buddy-cf38b.appspot.com/o/historyQueue.jpg?alt=media&token=74df40a5-f9b5-4450-beec-1c381660ba3f
+    image_URL: "https://firebasestorage.googleapis.com/v0/b/travel-buddy-cf38b.appspot.com/o/historyQueue.jpg?alt=media&token=74df40a5-f9b5-4450-beec-1c381660ba3f"
   },
   {
     image_desc:
