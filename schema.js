@@ -44,6 +44,15 @@ const ImageType = new GraphQLObjectType({
   }),
 });
 
+const TagType = new GraphQLObjectType({
+  name: "TagsForAnExperience",
+  fields: () => ({
+    tag_id: { type: GraphQLID },
+    tag_text: { type: GraphQLString },
+    experience_id: { type: GraphQLID },
+  }),
+});
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -79,6 +88,14 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args) {
         const { experience_id } = args;
         return db("images").where("experience_id", experience_id);
+      },
+    },
+    tagsForAnExperience: {
+      type: new GraphQLList(TagType),
+      args: { experience_id: { type: GraphQLID } },
+      resolve(parent, args) {
+        const { experience_id } = args;
+        // return db("tags").innerJoin("tag_experience_junction", experience_id);
       },
     },
   },
