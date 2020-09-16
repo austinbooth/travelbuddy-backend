@@ -30,7 +30,7 @@ const RootQuery = new GraphQLObjectType({
       args: { experience_id: { type: GraphQLID } },
       resolve(parent, args) {
         const { experience_id } = args;
-        periences")return db("ex
+        return db("experiences")
           .where("experience_id", experience_id)
           .then(([experience]) => experience);
       },
