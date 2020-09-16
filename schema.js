@@ -34,6 +34,16 @@ const CommentType = new GraphQLObjectType({
   }),
 });
 
+const ImageType = new GraphQLObjectType({
+  name: "Images",
+  fields: () => ({
+    image_id: { type: GraphQLID },
+    image_desc: { type: GraphQLString },
+    experience_id: { type: GraphQLID },
+    image_URL: { type: GraphQLString },
+  }),
+});
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -61,6 +71,14 @@ const RootQuery = new GraphQLObjectType({
         return db("comments")
           .where("experience_id", experience_id)
           .then((comments) => comments);
+      },
+    },
+    images: {
+      type: new GraphQLList(ImageType),
+      args: { experience_id: { type: GraphQLID } },
+      resolve(parent, args) {
+        const { experience_id } = args;
+        return db("images").where("experience_id", experience_id);
       },
     },
   },
