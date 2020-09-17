@@ -144,12 +144,50 @@ describe("app", () => {
                 experience_id: '1',
                 image_desc: 'image 1 for experience 1',
                 image_URL: ''
-
-
               })
             );
+          });
+      });
+    });
+    describe("/tags", () => {
+      test("POST: 200 - responds with JSON for all associated tags when passed an experience id", () => {
+        const query = {
+          query: "{tagsForAnExperience(experience_id: 1) {tag_text}}"
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(200)
+          .then(({
+            body: {
+              data
+            }
+          }) => {
+            expect(Array.isArray(data.tagsForAnExperience)).toBe(true);
+            expect(data.tagsForAnExperience.length).toBe(1);
 
-
+          });
+      });
+      test("POST: 200 - responds with JSON containing all key value pairs when passed all keys", () => {
+        const query = {
+          query: "{tagsForAnExperience(experience_id: 1) {  tag_id, tag_text, experience_id}}"
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(200)
+          .then(({
+            body: {
+              data
+            }
+          }) => {
+            expect(data.tagsForAnExperience[0]).toEqual(
+              expect.objectContaining({
+                "experience_id": "1",
+                "tag_id": "1",
+                "tag_text": "tag_1"
+              })
+            );
           });
       });
     });
