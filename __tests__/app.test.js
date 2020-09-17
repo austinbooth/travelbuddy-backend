@@ -106,5 +106,48 @@ describe("app", () => {
           });
       });
     });
+    describe("/images", () => {
+      test("POST: 200 - responds with JSON for all associated images when passed an experience id", () => {
+        const query = {
+          query: "{images(experience_id: 1) {image_desc}}"
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(200)
+          .then(({
+            body: {
+              data
+            }
+          }) => {
+            expect(Array.isArray(data.images)).toBe(true);
+            expect(data.images.length).toBe(1);
+
+          });
+      });
+      test("POST: 200 - responds with JSON containing all key value pairs when passed all keys", () => {
+        const query = {
+          query: "{images(experience_id: 1) { image_id, experience_id, image_desc, image_URL,}}"
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(200)
+          .then(({
+            body: {
+              data
+            }
+          }) => {
+            expect(data.images[0]).toEqual(
+              expect.objectContaining({
+
+
+
+              })
+            );
+
+          });
+      });
+    });
   })
 });
