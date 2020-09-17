@@ -140,11 +140,15 @@ describe("app", () => {
           }) => {
             expect(data.images[0]).toEqual(
               expect.objectContaining({
-
+                image_id: '1',
+                experience_id: '1',
+                image_desc: 'image 1 for experience 1',
+                image_URL: ''
 
 
               })
             );
+
 
           });
       });
