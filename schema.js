@@ -166,6 +166,22 @@ const RootQuery = new GraphQLObjectType({
           experience_id)
       },
     },
+
+    ExperiencesForATag: {
+      type: new GraphQLList(ExperienceType),
+      args: {
+        tag_id: {
+          type: GraphQLID
+        }
+
+      },
+      resolve(parent, args) {
+        const {
+          tag_id
+        } = args;
+        return db.select('*').from('experiences').innerJoin('tag_experience_junction', 'experiences.experience_id', 'tag_experience_junction.experience_id').where('tag_experience_junction.tag_id', tag_id)
+      },
+    },
   },
 });
 
