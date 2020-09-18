@@ -9,7 +9,7 @@ beforeEach(() => db.seed.run());
 describe("app", () => {
   afterAll(() => connection.destroy());
   describe("/graphql", () => {
-    test("POST: 201 - adds a new experience", () => {
+    test("POST: 200 - adds a new experience", () => {
       return request(app)
         .post("/graphql")
         .send({
