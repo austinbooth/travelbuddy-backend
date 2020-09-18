@@ -16,7 +16,7 @@ describe("app", () => {
           query:
             'mutation{addExperience(input: {title: "test title", body: "test body", username: "user_a", location_lat: "53.96268", location_long: "-1.085605"}) {experience_id title body username created_at location_lat location_long likes}}',
         })
-        .expect(200)
+        .expect(200) // 201?
         .then(({ body: { data } }) => {
           const experience = data.addExperience;
           expect(experience).toEqual(
