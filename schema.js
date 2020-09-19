@@ -150,6 +150,24 @@ const InputCommentType = new GraphQLInputObjectType({
   }),
 });
 
+const InputImageType = new GraphQLInputObjectType({
+  name: "ImageInput",
+  fields: () => ({
+    image_id: {
+      type: GraphQLID,
+    },
+    image_desc: {
+      type: GraphQLString,
+    },
+    image_URL: {
+      type: GraphQLString,
+    },
+    experience_id: {
+      type: GraphQLID,
+    },
+  }),
+});
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   description: "this is the data we can retrieve from the database",
@@ -298,6 +316,28 @@ const RootMutation = new GraphQLObjectType({
           .returning("*")
           .then((commentRows) => {
             return commentRows[0];
+          });
+      },
+    },
+    addImage: {
+      type: ImageType,
+      args: {
+        input: { type: InputImageType },
+      },
+      resolve(parent, args) {
+        const image = {
+          // image_id auto-generated
+          image_desc: args.input.image_desc,
+          image_URL: args.input.image_URL,
+          experience_id: args.input.experience_id, // not nullable
+        };
+        return db
+          .insert(image)
+          .into("images")
+          .where("experience_id", image.experience_id)
+          .returning("*")
+          .then((imageRows) => {
+            return imageRows[0];
           });
       },
     },
