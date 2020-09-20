@@ -76,3 +76,18 @@ exports.InputImageType = new GraphQLInputObjectType({
     },
   }),
 });
+
+exports.InputUpdateExperienceType = new GraphQLInputObjectType({
+  name: "UpdateExperienceInput",
+  fields: () => ({
+    experience_id: {
+      type: GraphQLID,
+    },
+    title: {
+      type: GraphQLString,
+    },
+    body: {
+      type: GraphQLString,
+    },
+  }),
+});
