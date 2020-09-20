@@ -12,6 +12,7 @@ const {
   InputCommentType,
   InputImageType,
   InputUpdateExperienceType,
+  InputUpdateExperienceLikesType,
 } = require("./inputTypes");
 
 const ExperienceType = new GraphQLObjectType({
@@ -280,7 +281,7 @@ const RootMutation = new GraphQLObjectType({
         input: { type: InputUpdateExperienceType },
       },
       resolve(parent, args) {
-        const experience_id = args.input.experience_id;
+        const { experience_id } = args.input;
         const newExperienceData = {
           title: args.input.title,
           body: args.input.body,
@@ -288,6 +289,22 @@ const RootMutation = new GraphQLObjectType({
         return db("experiences")
           .where("experience_id", experience_id)
           .update(newExperienceData)
+          .returning("*")
+          .then((experienceRows) => {
+            return experienceRows[0];
+          });
+      },
+    },
+    updateExperienceLikes: {
+      type: ExperienceType,
+      args: {
+        input: { type: InputUpdateExperienceLikesType },
+      },
+      resolve(parent, args) {
+        const { experience_id, inc_likes } = args.input;
+        return db("experiences")
+          .where("experience_id", experience_id)
+          .increment("likes", inc_likes)
           .returning("*")
           .then((experienceRows) => {
             return experienceRows[0];
