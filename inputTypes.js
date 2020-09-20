@@ -91,3 +91,15 @@ exports.InputUpdateExperienceType = new GraphQLInputObjectType({
     },
   }),
 });
+
+exports.InputUpdateExperienceLikesType = new GraphQLInputObjectType({
+  name: "UpdateExperienceLikesInput",
+  fields: () => ({
+    experience_id: {
+      type: GraphQLID,
+    },
+    inc_likes: {
+      type: GraphQLInt,
+    },
+  }),
+});
