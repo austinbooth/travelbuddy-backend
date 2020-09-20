@@ -96,5 +96,23 @@ describe("app", () => {
           );
         });
     });
+    test("POST: 200 - updates likes on an experience for a positive value", () => {
+      const mutation = {
+        query:
+          'mutation{updateExperienceLikes(input:{experience_id: "1", inc_likes: 1}){experience_id title body username created_at location_lat location_long likes}}',
+      };
+      return request(app)
+        .post("/graphql")
+        .send(mutation)
+        .expect(200)
+        .then(({ body: { data } }) => {
+          const updatedLikes = data.updateExperienceLikes;
+          expect(updatedLikes).toEqual(
+            expect.objectContaining({
+              likes: 6,
+            })
+          );
+        });
+    });
   });
 });
