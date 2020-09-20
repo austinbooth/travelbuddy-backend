@@ -77,5 +77,24 @@ describe("app", () => {
           );
         });
     });
+    test("POST: 200 - updates title and body on an experience", () => {
+      const mutation = {
+        query:
+          'mutation{updateExperience(input:{experience_id: "1", title: "new title", body: "new body"}){experience_id title body username created_at location_lat location_long likes}}',
+      };
+      return request(app)
+        .post("/graphql")
+        .send(mutation)
+        .expect(200)
+        .then(({ body: { data } }) => {
+          const updatedExperience = data.updateExperience;
+          expect(updatedExperience).toEqual(
+            expect.objectContaining({
+              title: "new title",
+              body: "new body",
+            })
+          );
+        });
+    });
   });
 });
