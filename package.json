@@ -12,7 +12,7 @@
     "migrate-latest-test": "NODE_ENV=test knex migrate:latest",
     "migrate-rollback-test": "NODE_ENV=test knex migrate:rollback",
     "test": "jest --watch",
-    "start": "nodemon listen.js"
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
