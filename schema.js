@@ -9,11 +9,11 @@ const {
 const { ExperienceType, CommentType, ImageType, TagType } = require("./types");
 
 const {
-  InputExperienceType,
-  InputCommentType,
-  InputImageType,
-  InputUpdateExperienceType,
-  InputUpdateExperienceLikesType,
+  ExperienceInputType,
+  CommentInputType,
+  ImageInputType,
+  UpdateExperienceInputType,
+  UpdateExperienceLikesInputType,
 } = require("./inputTypes");
 
 const RootQuery = new GraphQLObjectType({
@@ -120,7 +120,7 @@ const RootMutation = new GraphQLObjectType({
     addExperience: {
       type: ExperienceType, // this is the return type
       args: {
-        input: { type: InputExperienceType }, // this is the type of data being entered into the db
+        input: { type: ExperienceInputType }, // this is the type of data being entered into the db
       },
       resolve(parent, args) {
         // these are the data fields that can be put onto the query
@@ -146,7 +146,7 @@ const RootMutation = new GraphQLObjectType({
     addComment: {
       type: CommentType,
       args: {
-        input: { type: InputCommentType },
+        input: { type: CommentInputType },
       },
       resolve(parent, args) {
         const comment = {
@@ -170,7 +170,7 @@ const RootMutation = new GraphQLObjectType({
     addImage: {
       type: ImageType,
       args: {
-        input: { type: InputImageType },
+        input: { type: ImageInputType },
       },
       resolve(parent, args) {
         const image = {
@@ -192,7 +192,7 @@ const RootMutation = new GraphQLObjectType({
     updateExperience: {
       type: ExperienceType,
       args: {
-        input: { type: InputUpdateExperienceType },
+        input: { type: UpdateExperienceInputType },
       },
       resolve(parent, args) {
         const { experience_id } = args.input;
@@ -212,7 +212,7 @@ const RootMutation = new GraphQLObjectType({
     updateExperienceLikes: {
       type: ExperienceType,
       args: {
-        input: { type: InputUpdateExperienceLikesType },
+        input: { type: UpdateExperienceLikesInputType },
       },
       resolve(parent, args) {
         const { experience_id, inc_likes } = args.input;

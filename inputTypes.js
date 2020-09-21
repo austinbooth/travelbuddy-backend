@@ -5,7 +5,7 @@ const {
   GraphQLInputObjectType,
 } = require("graphql");
 
-exports.InputExperienceType = new GraphQLInputObjectType({
+exports.ExperienceInputType = new GraphQLInputObjectType({
   name: "ExperienceInput",
   fields: () => ({
     experience_id: {
@@ -35,7 +35,7 @@ exports.InputExperienceType = new GraphQLInputObjectType({
   }),
 });
 
-exports.InputCommentType = new GraphQLInputObjectType({
+exports.CommentInputType = new GraphQLInputObjectType({
   name: "CommentInput",
   fields: () => ({
     comment_id: {
@@ -59,7 +59,7 @@ exports.InputCommentType = new GraphQLInputObjectType({
   }),
 });
 
-exports.InputImageType = new GraphQLInputObjectType({
+exports.ImageInputType = new GraphQLInputObjectType({
   name: "ImageInput",
   fields: () => ({
     image_id: {
@@ -77,7 +77,7 @@ exports.InputImageType = new GraphQLInputObjectType({
   }),
 });
 
-exports.InputUpdateExperienceType = new GraphQLInputObjectType({
+exports.UpdateExperienceInputType = new GraphQLInputObjectType({
   name: "UpdateExperienceInput",
   fields: () => ({
     experience_id: {
@@ -92,7 +92,7 @@ exports.InputUpdateExperienceType = new GraphQLInputObjectType({
   }),
 });
 
-exports.InputUpdateExperienceLikesType = new GraphQLInputObjectType({
+exports.UpdateExperienceLikesInputType = new GraphQLInputObjectType({
   name: "UpdateExperienceLikesInput",
   fields: () => ({
     experience_id: {
