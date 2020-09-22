@@ -339,8 +339,7 @@ describe("app", () => {
           );
       });
     });
-    // ************************
-    describe.only("deleteExperience", () => {
+    describe("deleteExperience", () => {
       test("deletes an experience and returns the id of the deleted experience", () => {
         const mutation = {
           query:
@@ -370,6 +369,44 @@ describe("app", () => {
               "experience not found, invalid experience id"
             );
           });
+      });
+    });
+    // ************************
+    describe.only("deleteTagFromExperience", () => {
+      test("deletes a tag from an experience and returns the experience id and tag id", () => {
+        const mutation = {
+          query:
+            'mutation{deleteTagFromExperience(experience_id:"2", tag_id:"2"), { experience_id, tag_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { deleteTagFromExperience },
+              },
+            }) => {
+              expect(deleteTagFromExperience.experience_id).toBe("2");
+              expect(deleteTagFromExperience.tag_id).toBe("2");
+            }
+          )
+          .then(() => {
+            const query = {
+              query: '{tagsForAnExperience(experience_id: "2") {tag_id}}',
+            };
+            return request(app).post("/graphql").send(query);
+          })
+          .then(
+            ({
+              body: {
+                data: { tagsForAnExperience },
+              },
+            }) => {
+              expect(tagsForAnExperience.length).toBe(0);
+            }
+          );
       });
     });
   });

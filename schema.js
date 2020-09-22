@@ -303,16 +303,36 @@ const RootMutation = new GraphQLObjectType({
       },
       resolve(parent, args) {
         const { experience_id } = args;
-        return (
-          db("experiences")
-            .where("experience_id", experience_id)
-            .del()
-            .returning("*")
-            .then(([deleted]) => {
-              if (deleted === undefined) return Promise.reject();
-              return deleted;
-            })
-        );
+        return db("experiences")
+          .where("experience_id", experience_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteTagFromExperience: {
+      type: TagType,
+      args: {
+        experience_id: {
+          type: GraphQLID,
+        },
+        tag_id: {
+          type: GraphQLID,
+        },
+      },
+      resolve(parent, args) {
+        const { experience_id, tag_id } = args;
+        return db("tag_experience_junction")
+          .where({ experience_id, tag_id })
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
       },
     },
   },
