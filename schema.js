@@ -4,6 +4,7 @@ const {
   GraphQLObjectType,
   GraphQLID,
   GraphQLList,
+  GraphQLInt,
 } = require("graphql");
 const { checkIfExperienceExists, checkIfTagExists } = require("./utils");
 
@@ -332,6 +333,24 @@ const RootMutation = new GraphQLObjectType({
           .then(([deleted]) => {
             if (deleted === undefined) return Promise.reject();
             return deleted;
+          });
+      },
+    },
+    updateCommentLikes: {
+      type: CommentType,
+      args: {
+        comment_id: { type: GraphQLID },
+        inc_likes: { type: GraphQLInt },
+      },
+      resolve(parent, args) {
+        const { comment_id, inc_likes } = args;
+        return db("comments")
+          .where("comment_id", comment_id)
+          .increment("likes", inc_likes)
+          .returning("*")
+          .then(([updatedComment]) => {
+            if (updatedComment) return updatedComment;
+            return Promise.reject();
           });
       },
     },

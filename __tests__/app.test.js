@@ -109,6 +109,24 @@ describe("app", () => {
             );
           });
       });
+      test("POST: 200 - updates likes on an experience for a negative value", () => {
+        const mutation = {
+          query:
+            'mutation{updateExperienceLikes(input:{experience_id: "1", inc_likes: -1}){experience_id title body username created_at location_lat location_long likes}}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(({ body: { data } }) => {
+            const updatedLikes = data.updateExperienceLikes;
+            expect(updatedLikes).toEqual(
+              expect.objectContaining({
+                likes: 4,
+              })
+            );
+          });
+      });
     });
     describe("comments", () => {
       test("POST: 200 - responds with JSON for all associated comments when passed an experience id", () => {
@@ -174,6 +192,42 @@ describe("app", () => {
                 username: "user_b",
                 created_at: expect.any(String),
                 likes: 0,
+              })
+            );
+          });
+      });
+      test("POST: 200 - updates likes on a comment for a positive value", () => {
+        const mutation = {
+          query:
+            'mutation{updateCommentLikes(comment_id: "2", inc_likes: 1){comment_id created_at body likes username experience_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(({ body: { data } }) => {
+            const updatedLikes = data.updateCommentLikes;
+            expect(updatedLikes).toEqual(
+              expect.objectContaining({
+                likes: 6,
+              })
+            );
+          });
+      });
+      test("POST: 200 - updates likes on a comment for a negative value", () => {
+        const mutation = {
+          query:
+            'mutation{updateCommentLikes(comment_id: "2", inc_likes: -1){comment_id created_at body likes username experience_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(({ body: { data } }) => {
+            const updatedLikes = data.updateCommentLikes;
+            expect(updatedLikes).toEqual(
+              expect.objectContaining({
+                likes: 4,
               })
             );
           });
@@ -371,8 +425,7 @@ describe("app", () => {
           });
       });
     });
-    // ************************
-    describe.only("deleteTagFromExperience", () => {
+    describe("deleteTagFromExperience", () => {
       test("deletes a tag from an experience and returns the experience id and tag id", () => {
         const mutation = {
           query:
