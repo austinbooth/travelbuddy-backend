@@ -255,6 +255,66 @@ const RootMutation = new GraphQLObjectType({
           });
       },
     },
+    // Error handling to be done from here
+    deleteComment: {
+      type: CommentType,
+      args: {
+        comment_id: {
+          type: GraphQLID,
+        },
+      },
+      resolve(parent, args) {
+        const { comment_id } = args;
+        return db("comments")
+          .where("comment_id", comment_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteImage: {
+      type: ImageType,
+      args: {
+        image_id: {
+          type: GraphQLID,
+        },
+      },
+      resolve(parent, args) {
+        const { image_id } = args;
+        return db("images")
+          .where("image_id", image_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteExperience: {
+      type: ExperienceType,
+      args: {
+        experience_id: {
+          type: GraphQLID,
+        },
+      },
+      resolve(parent, args) {
+        const { experience_id } = args;
+        return (
+          db("experiences")
+            .where("experience_id", experience_id)
+            .del()
+            .returning("*")
+            .then(([deleted]) => {
+              if (deleted === undefined) return Promise.reject();
+              return deleted;
+            })
+        );
+      },
+    },
   },
 });
 

@@ -269,5 +269,108 @@ describe("app", () => {
           });
       });
     });
+    describe("deleteComment", () => {
+      test("deletes a comment and returns the id of the deleted comment", () => {
+        const mutation = {
+          query: 'mutation{deleteComment(comment_id:"3"), { comment_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { deleteComment },
+              },
+            }) => {
+              expect(deleteComment.comment_id).toBe("3");
+            }
+          )
+          .then(() => {
+            const query = {
+              query: "{comments(experience_id: 2) {body}}",
+            };
+            return request(app).post("/graphql").send(query);
+          })
+          .then(
+            ({
+              body: {
+                data: { comments },
+              },
+            }) => {
+              expect(comments.length).toBe(0);
+            }
+          );
+      });
+    });
+    describe("deleteImage", () => {
+      test("deletes an image and returns the id of the deleted image", () => {
+        const mutation = {
+          query: 'mutation{deleteImage(image_id:"1"), { image_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { deleteImage },
+              },
+            }) => {
+              expect(deleteImage.image_id).toBe("1");
+            }
+          )
+          .then(() => {
+            const query = {
+              query: '{images(experience_id: "1") {image_id}}',
+            };
+            return request(app).post("/graphql").send(query);
+          })
+          .then(
+            ({
+              body: {
+                data: { images },
+              },
+            }) => {
+              expect(images.length).toBe(0);
+            }
+          );
+      });
+    });
+    // ************************
+    describe.only("deleteExperience", () => {
+      test("deletes an experience and returns the id of the deleted experience", () => {
+        const mutation = {
+          query:
+            'mutation{deleteExperience(experience_id:"1"), { experience_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { deleteExperience },
+              },
+            }) => {
+              expect(deleteExperience.experience_id).toBe("1");
+            }
+          )
+          .then(() => {
+            const query = {
+              query: '{experience(experience_id: "1") {experience_id}}',
+            };
+            return request(app).post("/graphql").send(query);
+          })
+          .then(({ body: { errors } }) => {
+            expect(errors[0].msg).toBe(
+              "experience not found, invalid experience id"
+            );
+          });
+      });
+    });
   });
 });
