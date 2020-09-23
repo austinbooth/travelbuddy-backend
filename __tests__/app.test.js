@@ -4,10 +4,9 @@ const app = require("../app");
 const request = require("supertest");
 const db = require("../db/connection");
 
-beforeEach(() => db.seed.run());
-
 describe("app", () => {
-  afterAll(() => connection.destroy());
+  beforeEach(() => db.seed.run());
+  afterAll(() => db.destroy());
   describe("/graphql", () => {
     describe("experiences", () => {
       test("POST: 200 - responds with JSON for all experiences", () => {
@@ -199,7 +198,7 @@ describe("app", () => {
       test("POST: 200 - updates likes on a comment for a positive value", () => {
         const mutation = {
           query:
-            'mutation{updateCommentLikes(comment_id: "2", inc_likes: 1){comment_id created_at body likes username experience_id }}',
+            'mutation{updateCommentLikes(input:{comment_id: "2", inc_likes: 1}){comment_id created_at body likes username experience_id }}',
         };
         return request(app)
           .post("/graphql")
@@ -217,7 +216,7 @@ describe("app", () => {
       test("POST: 200 - updates likes on a comment for a negative value", () => {
         const mutation = {
           query:
-            'mutation{updateCommentLikes(comment_id: "2", inc_likes: -1){comment_id created_at body likes username experience_id }}',
+            'mutation{updateCommentLikes(input:{comment_id: "2", inc_likes: -1}){comment_id created_at body likes username experience_id }}',
         };
         return request(app)
           .post("/graphql")
@@ -326,7 +325,8 @@ describe("app", () => {
     describe("deleteComment", () => {
       test("deletes a comment and returns the id of the deleted comment", () => {
         const mutation = {
-          query: 'mutation{deleteComment(comment_id:"3"), { comment_id }}',
+          query:
+            'mutation{deleteComment(input:{comment_id:"3"}){ comment_id }}',
         };
         return request(app)
           .post("/graphql")
@@ -361,7 +361,7 @@ describe("app", () => {
     describe("deleteImage", () => {
       test("deletes an image and returns the id of the deleted image", () => {
         const mutation = {
-          query: 'mutation{deleteImage(image_id:"1"), { image_id }}',
+          query: 'mutation{deleteImage(input: {image_id:"1"}){ image_id }}',
         };
         return request(app)
           .post("/graphql")
@@ -397,7 +397,7 @@ describe("app", () => {
       test("deletes an experience and returns the id of the deleted experience", () => {
         const mutation = {
           query:
-            'mutation{deleteExperience(experience_id:"1"), { experience_id }}',
+            'mutation{deleteExperience(input:{experience_id:"1"}){ experience_id }}',
         };
         return request(app)
           .post("/graphql")
@@ -429,7 +429,7 @@ describe("app", () => {
       test("deletes a tag from an experience and returns the experience id and tag id", () => {
         const mutation = {
           query:
-            'mutation{deleteTagFromExperience(experience_id:"2", tag_id:"2"), { experience_id, tag_id }}',
+            'mutation{deleteTagFromExperience(input:{experience_id:"2", tag_id:"2"}){ experience_id, tag_id }}',
         };
         return request(app)
           .post("/graphql")

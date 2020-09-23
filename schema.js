@@ -16,6 +16,11 @@ const {
   ImageInputType,
   UpdateExperienceInputType,
   UpdateExperienceLikesInputType,
+  DeleteCommentInputType,
+  DeleteImageInputType,
+  DeleteExperienceInputType,
+  DeleteTagFromExperienceType,
+  UpdateCommentLikesType,
 } = require("./inputTypes");
 
 const RootQuery = new GraphQLObjectType({
@@ -260,12 +265,10 @@ const RootMutation = new GraphQLObjectType({
     deleteComment: {
       type: CommentType,
       args: {
-        comment_id: {
-          type: GraphQLID,
-        },
+        input: { type: DeleteCommentInputType },
       },
       resolve(parent, args) {
-        const { comment_id } = args;
+        const { comment_id } = args.input;
         return db("comments")
           .where("comment_id", comment_id)
           .del()
@@ -279,12 +282,10 @@ const RootMutation = new GraphQLObjectType({
     deleteImage: {
       type: ImageType,
       args: {
-        image_id: {
-          type: GraphQLID,
-        },
+        input: { type: DeleteImageInputType },
       },
       resolve(parent, args) {
-        const { image_id } = args;
+        const { image_id } = args.input;
         return db("images")
           .where("image_id", image_id)
           .del()
@@ -298,12 +299,10 @@ const RootMutation = new GraphQLObjectType({
     deleteExperience: {
       type: ExperienceType,
       args: {
-        experience_id: {
-          type: GraphQLID,
-        },
+        input: { type: DeleteExperienceInputType },
       },
       resolve(parent, args) {
-        const { experience_id } = args;
+        const { experience_id } = args.input;
         return db("experiences")
           .where("experience_id", experience_id)
           .del()
@@ -317,15 +316,10 @@ const RootMutation = new GraphQLObjectType({
     deleteTagFromExperience: {
       type: TagType,
       args: {
-        experience_id: {
-          type: GraphQLID,
-        },
-        tag_id: {
-          type: GraphQLID,
-        },
+        input: { type: DeleteTagFromExperienceType },
       },
       resolve(parent, args) {
-        const { experience_id, tag_id } = args;
+        const { experience_id, tag_id } = args.input;
         return db("tag_experience_junction")
           .where({ experience_id, tag_id })
           .del()
@@ -339,11 +333,10 @@ const RootMutation = new GraphQLObjectType({
     updateCommentLikes: {
       type: CommentType,
       args: {
-        comment_id: { type: GraphQLID },
-        inc_likes: { type: GraphQLInt },
+        input: { type: UpdateCommentLikesType },
       },
       resolve(parent, args) {
-        const { comment_id, inc_likes } = args;
+        const { comment_id, inc_likes } = args.input;
         return db("comments")
           .where("comment_id", comment_id)
           .increment("likes", inc_likes)
