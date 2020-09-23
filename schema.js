@@ -4,6 +4,7 @@ const {
   GraphQLObjectType,
   GraphQLID,
   GraphQLList,
+  GraphQLInt,
 } = require("graphql");
 const { checkIfExperienceExists, checkIfTagExists } = require("./utils");
 
@@ -15,6 +16,11 @@ const {
   ImageInputType,
   UpdateExperienceInputType,
   UpdateExperienceLikesInputType,
+  DeleteCommentInputType,
+  DeleteImageInputType,
+  DeleteExperienceInputType,
+  DeleteTagFromExperienceType,
+  UpdateCommentLikesType,
 } = require("./inputTypes");
 
 const RootQuery = new GraphQLObjectType({
@@ -251,6 +257,92 @@ const RootMutation = new GraphQLObjectType({
           .returning("*")
           .then(([updatedExperience]) => {
             if (updatedExperience) return updatedExperience;
+            return Promise.reject();
+          });
+      },
+    },
+    // Error handling to be done from here
+    deleteComment: {
+      type: CommentType,
+      args: {
+        input: { type: DeleteCommentInputType },
+      },
+      resolve(parent, args) {
+        const { comment_id } = args.input;
+        return db("comments")
+          .where("comment_id", comment_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteImage: {
+      type: ImageType,
+      args: {
+        input: { type: DeleteImageInputType },
+      },
+      resolve(parent, args) {
+        const { image_id } = args.input;
+        return db("images")
+          .where("image_id", image_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteExperience: {
+      type: ExperienceType,
+      args: {
+        input: { type: DeleteExperienceInputType },
+      },
+      resolve(parent, args) {
+        const { experience_id } = args.input;
+        return db("experiences")
+          .where("experience_id", experience_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteTagFromExperience: {
+      type: TagType,
+      args: {
+        input: { type: DeleteTagFromExperienceType },
+      },
+      resolve(parent, args) {
+        const { experience_id, tag_id } = args.input;
+        return db("tag_experience_junction")
+          .where({ experience_id, tag_id })
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    updateCommentLikes: {
+      type: CommentType,
+      args: {
+        input: { type: UpdateCommentLikesType },
+      },
+      resolve(parent, args) {
+        const { comment_id, inc_likes } = args.input;
+        return db("comments")
+          .where("comment_id", comment_id)
+          .increment("likes", inc_likes)
+          .returning("*")
+          .then(([updatedComment]) => {
+            if (updatedComment) return updatedComment;
             return Promise.reject();
           });
       },
