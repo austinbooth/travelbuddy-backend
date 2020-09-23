@@ -1,6 +1,4 @@
 exports.errorHandler = ({ message, locations, path }) => {
-  // console.log("message:", message);
-  // console.log("path:", path);
   const errorMessageLookupUsingPath = {
     experience: "experience not found, invalid experience id",
     comments: "comments not found, invalid experience id",
@@ -20,6 +18,8 @@ exports.errorHandler = ({ message, locations, path }) => {
     deleteTagFromExperience:
       "unable to delete tag from experience, invalid experience id or tag_id",
     updateCommentLikes: "unable to update comment likes, invalid comment id",
+    addTagToExperience:
+      "unable to add tag to experience, invalid tag id or experience id",
   };
   const errorObj = {
     msg: errorMessageLookupUsingPath[path],
@@ -34,14 +34,16 @@ exports.errorHandler = ({ message, locations, path }) => {
       errorObj.msg = "unable to find comments, please check input";
     else if (message.includes('"Comments"'))
       errorObj.msg = "unable to find comments, please check input";
-    //
     else if (message.includes('"RootQueryType.images"'))
       errorObj.msg = "unable to find images, please check input";
-    //
+    else if (message.includes('"RootQueryType.tagsForAnExperience"'))
+      errorObj.msg = "unable to find tags, please check input";
+    else if (message.includes('"RootQueryType.experiencesForATag"'))
+      errorObj.msg = "unable to find experiences, please check input";
     else if (message.includes('"ExperienceInput"'))
-      errorObj.msg = "unable to create experience, please check input";
+      errorObj.msg = "unable to add experience, please check input";
     else if (message.includes('"CommentInput"'))
-      errorObj.msg = "unable to create comment, please check input";
+      errorObj.msg = "unable to add comment, please check input";
     else if (message.includes('"ImageInput"'))
       errorObj.msg = "unable to add image, please check input";
     else if (message.includes('"UpdateExperienceInput"'))
@@ -59,6 +61,10 @@ exports.errorHandler = ({ message, locations, path }) => {
       errorObj.msg = "unable to delete tag from experience, please check input";
     else if (message.includes('"UpdateCommentLikes"'))
       errorObj.msg = "unable to update comment likes, please check input";
+    else if (message.includes('"UpdateExperienceLikesInput"'))
+      errorObj.msg = "unable to update experience likes, please check input";
+    else if (message.includes('"AddTagToExperience"'))
+      errorObj.msg = "unable to add tag to experience, please check input";
     else errorObj.msg = "Sorry there has been an error. Please try again.";
   }
   return errorObj;

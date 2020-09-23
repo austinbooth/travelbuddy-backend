@@ -69,7 +69,6 @@ const RootQuery = new GraphQLObjectType({
         });
       },
     },
-    // ****************
     images: {
       type: new GraphQLList(ImageType),
       args: {
@@ -148,7 +147,6 @@ const RootQuery = new GraphQLObjectType({
     },
   },
 });
-
 const RootMutation = new GraphQLObjectType({
   name: "RootMutationType",
   description: "this is the data we can change or add to the database",
