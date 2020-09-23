@@ -30,11 +30,13 @@ exports.errorHandler = ({ message, locations, path }) => {
       errorObj.msg = "unable to find experience, please check input";
     else if (message.includes('"Experiences"'))
       errorObj.msg = "unable to find experiences, please check input";
-    //
     else if (message.includes('"RootQueryType.comments"'))
       errorObj.msg = "unable to find comments, please check input";
     else if (message.includes('"Comments"'))
       errorObj.msg = "unable to find comments, please check input";
+    //
+    else if (message.includes('"RootQueryType.images"'))
+      errorObj.msg = "unable to find images, please check input";
     //
     else if (message.includes('"ExperienceInput"'))
       errorObj.msg = "unable to create experience, please check input";

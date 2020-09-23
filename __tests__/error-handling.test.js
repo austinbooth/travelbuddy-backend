@@ -72,7 +72,7 @@ describe("app error handling", () => {
       });
     });
     describe("comments", () => {
-      test.only("POST: 200 - returns an appropriate error message when passed a malformed query", () => {
+      test("POST: 200 - returns an appropriate error message when passed a malformed query", () => {
         const query = {
           query: "{comments(experience_id: 1) {body extra_field}}",
         };
@@ -83,6 +83,52 @@ describe("app error handling", () => {
           .then(({ body: { data, errors } }) => {
             expect(errors[0].msg).toBe(
               "unable to find comments, please check input"
+            );
+          });
+      });
+    });
+    describe.only("images", () => {
+      test("POST: 200 - returns an appropriate error message when passed a valid but non-existent experience_id", () => {
+        const query = {
+          query: '{images(experience_id: "999") {image_desc}}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(200)
+          .then(({ body: { data, errors } }) => {
+            expect(data.images).toBe(null);
+            expect(errors[0].msg).toBe(
+              "images not found, invalid experience id"
+            );
+          });
+      });
+      test("POST: 200 - returns an appropriate error message when passed an invalid experience_id", () => {
+        const query = {
+          query: '{images(experience_id: "beef") {image_desc}}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(200)
+          .then(({ body: { data, errors } }) => {
+            expect(data.images).toBe(null);
+            expect(errors[0].msg).toBe(
+              "images not found, invalid experience id"
+            );
+          });
+      });
+      test("POST: 200 - returns an appropriate error message when passed a malformed query", () => {
+        const query = {
+          query: '{images(experience_iddd: "1") {image_desc}}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(400)
+          .then(({ body: { data, errors } }) => {
+            expect(errors[0].msg).toBe(
+              "unable to find images, please check input"
             );
           });
       });
