@@ -261,7 +261,6 @@ const RootMutation = new GraphQLObjectType({
           });
       },
     },
-    // Error handling to be done from here
     deleteComment: {
       type: CommentType,
       args: {

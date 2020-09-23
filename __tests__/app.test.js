@@ -9,6 +9,27 @@ describe("app", () => {
   afterAll(() => db.destroy());
   describe("/graphql", () => {
     describe("experiences", () => {
+      test("POST: 200 - responds with JSON for a single experience", () => {
+        const query = {
+          query: "{experience(experience_id:1) {title, body, username, likes}}",
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { experience },
+              },
+            }) => {
+              expect(experience.title).toBe("experience 1");
+              expect(experience.body).toBe("body for experience 1");
+              expect(experience.username).toBe("user_a");
+              expect(experience.likes).toBe(5);
+            }
+          );
+      });
       test("POST: 200 - responds with JSON for all experiences", () => {
         const query = {
           query: "{experiences {title}}",
