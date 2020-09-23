@@ -21,6 +21,7 @@ const {
   DeleteExperienceInputType,
   DeleteTagFromExperienceType,
   UpdateCommentLikesType,
+  AddTagToExperienceType,
 } = require("./inputTypes");
 
 const RootQuery = new GraphQLObjectType({
@@ -68,6 +69,7 @@ const RootQuery = new GraphQLObjectType({
         });
       },
     },
+    // ****************
     images: {
       type: new GraphQLList(ImageType),
       args: {
@@ -343,6 +345,23 @@ const RootMutation = new GraphQLObjectType({
           .then(([updatedComment]) => {
             if (updatedComment) return updatedComment;
             return Promise.reject();
+          });
+      },
+    },
+    addTagToExperience: {
+      type: TagType,
+      args: {
+        input: { type: AddTagToExperienceType },
+      },
+      resolve(parent, args) {
+        const { experience_id, tag_id } = args.input;
+        return db
+          .insert({ experience_id, tag_id })
+          .into("tag_experience_junction")
+          .returning("*")
+          .then(([addedTag]) => {
+            if (addedTag === undefined) return Promise.reject();
+            return addedTag;
           });
       },
     },
