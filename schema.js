@@ -8,7 +8,13 @@ const {
 } = require("graphql");
 const { checkIfExperienceExists, checkIfTagExists } = require("./utils");
 
-const { ExperienceType, CommentType, ImageType, TagType } = require("./types");
+const {
+  ExperienceType,
+  CommentType,
+  ImageType,
+  TagType,
+  NewTagType,
+} = require("./types");
 
 const {
   ExperienceInputType,
@@ -144,6 +150,12 @@ const RootQuery = new GraphQLObjectType({
         return Promise.all(promises).then((experiences) => {
           return experiences[0];
         });
+      },
+    },
+    tags: {
+      type: new GraphQLList(NewTagType),
+      resolve() {
+        return db("tags");
       },
     },
   },
@@ -365,7 +377,7 @@ const RootMutation = new GraphQLObjectType({
       },
     },
     addNewTag: {
-      type: TagType,
+      type: NewTagType,
       args: {
         input: { type: AddNewTagType },
       },
