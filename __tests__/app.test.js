@@ -4,12 +4,32 @@ const app = require("../app");
 const request = require("supertest");
 const db = require("../db/connection");
 
-beforeEach(() => db.seed.run());
-
 describe("app", () => {
-  afterAll(() => connection.destroy());
+  beforeEach(() => db.seed.run());
+  afterAll(() => db.destroy());
   describe("/graphql", () => {
     describe("experiences", () => {
+      test("POST: 200 - responds with JSON for a single experience", () => {
+        const query = {
+          query: "{experience(experience_id:1) {title, body, username, likes}}",
+        };
+        return request(app)
+          .post("/graphql")
+          .send(query)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { experience },
+              },
+            }) => {
+              expect(experience.title).toBe("experience 1");
+              expect(experience.body).toBe("body for experience 1");
+              expect(experience.username).toBe("user_a");
+              expect(experience.likes).toBe(5);
+            }
+          );
+      });
       test("POST: 200 - responds with JSON for all experiences", () => {
         const query = {
           query: "{experiences {title}}",
@@ -109,6 +129,24 @@ describe("app", () => {
             );
           });
       });
+      test("POST: 200 - updates likes on an experience for a negative value", () => {
+        const mutation = {
+          query:
+            'mutation{updateExperienceLikes(input:{experience_id: "1", inc_likes: -1}){experience_id title body username created_at location_lat location_long likes}}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(({ body: { data } }) => {
+            const updatedLikes = data.updateExperienceLikes;
+            expect(updatedLikes).toEqual(
+              expect.objectContaining({
+                likes: 4,
+              })
+            );
+          });
+      });
     });
     describe("comments", () => {
       test("POST: 200 - responds with JSON for all associated comments when passed an experience id", () => {
@@ -174,6 +212,42 @@ describe("app", () => {
                 username: "user_b",
                 created_at: expect.any(String),
                 likes: 0,
+              })
+            );
+          });
+      });
+      test("POST: 200 - updates likes on a comment for a positive value", () => {
+        const mutation = {
+          query:
+            'mutation{updateCommentLikes(input:{comment_id: "2", inc_likes: 1}){comment_id created_at body likes username experience_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(({ body: { data } }) => {
+            const updatedLikes = data.updateCommentLikes;
+            expect(updatedLikes).toEqual(
+              expect.objectContaining({
+                likes: 6,
+              })
+            );
+          });
+      });
+      test("POST: 200 - updates likes on a comment for a negative value", () => {
+        const mutation = {
+          query:
+            'mutation{updateCommentLikes(input:{comment_id: "2", inc_likes: -1}){comment_id created_at body likes username experience_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(({ body: { data } }) => {
+            const updatedLikes = data.updateCommentLikes;
+            expect(updatedLikes).toEqual(
+              expect.objectContaining({
+                likes: 4,
               })
             );
           });
@@ -267,6 +341,146 @@ describe("app", () => {
               })
             );
           });
+      });
+    });
+    describe("deleteComment", () => {
+      test("deletes a comment and returns the id of the deleted comment", () => {
+        const mutation = {
+          query:
+            'mutation{deleteComment(input:{comment_id:"3"}){ comment_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { deleteComment },
+              },
+            }) => {
+              expect(deleteComment.comment_id).toBe("3");
+            }
+          )
+          .then(() => {
+            const query = {
+              query: "{comments(experience_id: 2) {body}}",
+            };
+            return request(app).post("/graphql").send(query);
+          })
+          .then(
+            ({
+              body: {
+                data: { comments },
+              },
+            }) => {
+              expect(comments.length).toBe(0);
+            }
+          );
+      });
+    });
+    describe("deleteImage", () => {
+      test("deletes an image and returns the id of the deleted image", () => {
+        const mutation = {
+          query: 'mutation{deleteImage(input: {image_id:"1"}){ image_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { deleteImage },
+              },
+            }) => {
+              expect(deleteImage.image_id).toBe("1");
+            }
+          )
+          .then(() => {
+            const query = {
+              query: '{images(experience_id: "1") {image_id}}',
+            };
+            return request(app).post("/graphql").send(query);
+          })
+          .then(
+            ({
+              body: {
+                data: { images },
+              },
+            }) => {
+              expect(images.length).toBe(0);
+            }
+          );
+      });
+    });
+    describe("deleteExperience", () => {
+      test("deletes an experience and returns the id of the deleted experience", () => {
+        const mutation = {
+          query:
+            'mutation{deleteExperience(input:{experience_id:"1"}){ experience_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { deleteExperience },
+              },
+            }) => {
+              expect(deleteExperience.experience_id).toBe("1");
+            }
+          )
+          .then(() => {
+            const query = {
+              query: '{experience(experience_id: "1") {experience_id}}',
+            };
+            return request(app).post("/graphql").send(query);
+          })
+          .then(({ body: { errors } }) => {
+            expect(errors[0].msg).toBe(
+              "experience not found, invalid experience id"
+            );
+          });
+      });
+    });
+    describe("deleteTagFromExperience", () => {
+      test("deletes a tag from an experience and returns the experience id and tag id", () => {
+        const mutation = {
+          query:
+            'mutation{deleteTagFromExperience(input:{experience_id:"2", tag_id:"2"}){ experience_id, tag_id }}',
+        };
+        return request(app)
+          .post("/graphql")
+          .send(mutation)
+          .expect(200)
+          .then(
+            ({
+              body: {
+                data: { deleteTagFromExperience },
+              },
+            }) => {
+              expect(deleteTagFromExperience.experience_id).toBe("2");
+              expect(deleteTagFromExperience.tag_id).toBe("2");
+            }
+          )
+          .then(() => {
+            const query = {
+              query: '{tagsForAnExperience(experience_id: "2") {tag_id}}',
+            };
+            return request(app).post("/graphql").send(query);
+          })
+          .then(
+            ({
+              body: {
+                data: { tagsForAnExperience },
+              },
+            }) => {
+              expect(tagsForAnExperience.length).toBe(0);
+            }
+          );
       });
     });
   });

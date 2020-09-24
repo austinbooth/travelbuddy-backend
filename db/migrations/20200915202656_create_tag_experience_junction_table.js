@@ -4,7 +4,8 @@ exports.up = function (knex) {
     junctionTable
       .integer("experience_id")
       .references("experiences.experience_id")
-      .notNullable();
+      .notNullable()
+      .onDelete("CASCADE");
     junctionTable.primary(["tag_id", "experience_id"]);
   });
 };

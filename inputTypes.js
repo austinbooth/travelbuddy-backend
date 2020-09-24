@@ -103,3 +103,62 @@ exports.UpdateExperienceLikesInputType = new GraphQLInputObjectType({
     },
   }),
 });
+
+exports.DeleteCommentInputType = new GraphQLInputObjectType({
+  name: "DeleteCommentInput",
+  fields: () => ({
+    comment_id: {
+      type: GraphQLID,
+    },
+  }),
+});
+
+exports.DeleteImageInputType = new GraphQLInputObjectType({
+  name: "DeleteImageInput",
+  fields: () => ({
+    image_id: {
+      type: GraphQLID,
+    },
+  }),
+});
+
+exports.DeleteExperienceInputType = new GraphQLInputObjectType({
+  name: "DeleteExperienceInput",
+  fields: () => ({
+    experience_id: {
+      type: GraphQLID,
+    },
+  }),
+});
+
+exports.DeleteTagFromExperienceType = new GraphQLInputObjectType({
+  name: "DeleteTagFromExperience",
+  fields: () => ({
+    experience_id: {
+      type: GraphQLID,
+    },
+    tag_id: {
+      type: GraphQLID,
+    },
+  }),
+});
+
+exports.UpdateCommentLikesType = new GraphQLInputObjectType({
+  name: "UpdateCommentLikes",
+  fields: () => ({
+    comment_id: { type: GraphQLID },
+    inc_likes: { type: GraphQLInt },
+  }),
+});
+
+exports.AddTagToExperienceType = new GraphQLInputObjectType({
+  name: "AddTagToExperience",
+  fields: () => ({
+    experience_id: {
+      type: GraphQLID,
+    },
+    tag_id: {
+      type: GraphQLID,
+    },
+  }),
+});

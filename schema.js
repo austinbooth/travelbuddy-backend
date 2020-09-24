@@ -4,7 +4,9 @@ const {
   GraphQLObjectType,
   GraphQLID,
   GraphQLList,
+  GraphQLInt,
 } = require("graphql");
+const { checkIfExperienceExists, checkIfTagExists } = require("./utils");
 
 const { ExperienceType, CommentType, ImageType, TagType } = require("./types");
 
@@ -14,6 +16,12 @@ const {
   ImageInputType,
   UpdateExperienceInputType,
   UpdateExperienceLikesInputType,
+  DeleteCommentInputType,
+  DeleteImageInputType,
+  DeleteExperienceInputType,
+  DeleteTagFromExperienceType,
+  UpdateCommentLikesType,
+  AddTagToExperienceType,
 } = require("./inputTypes");
 
 const RootQuery = new GraphQLObjectType({
@@ -31,7 +39,10 @@ const RootQuery = new GraphQLObjectType({
         const { experience_id } = args;
         return db("experiences")
           .where("experience_id", experience_id)
-          .then(([experience]) => experience);
+          .then(([experience]) => {
+            if (experience) return experience;
+            return Promise.reject();
+          });
       },
     },
     experiences: {
@@ -49,9 +60,13 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parent, args) {
         const { experience_id } = args;
-        return db("comments")
-          .where("experience_id", experience_id)
-          .then((comments) => comments);
+        const promises = [
+          db("comments").where("experience_id", experience_id),
+          checkIfExperienceExists(experience_id),
+        ];
+        return Promise.all(promises).then((comments) => {
+          return comments[0];
+        });
       },
     },
     images: {
@@ -63,7 +78,14 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parent, args) {
         const { experience_id } = args;
-        return db("images").where("experience_id", experience_id);
+
+        const promises = [
+          db("images").where("experience_id", experience_id),
+          checkIfExperienceExists(experience_id),
+        ];
+        return Promise.all(promises).then((images) => {
+          return images[0];
+        });
       },
     },
     tagsForAnExperience: {
@@ -75,19 +97,25 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parent, args) {
         const { experience_id } = args;
-        return db
-          .select(
-            "tags.tag_id",
-            "tags.tag_text",
-            "tag_experience_junction.experience_id"
-          )
-          .from("tags")
-          .innerJoin(
-            "tag_experience_junction",
-            "tags.tag_id",
-            "tag_experience_junction.tag_id"
-          )
-          .where("tag_experience_junction.experience_id", experience_id);
+        const promises = [
+          db
+            .select(
+              "tags.tag_id",
+              "tags.tag_text",
+              "tag_experience_junction.experience_id"
+            )
+            .from("tags")
+            .innerJoin(
+              "tag_experience_junction",
+              "tags.tag_id",
+              "tag_experience_junction.tag_id"
+            )
+            .where("tag_experience_junction.experience_id", experience_id),
+          checkIfExperienceExists(experience_id),
+        ];
+        return Promise.all(promises).then((tags) => {
+          return tags[0];
+        });
       },
     },
     experiencesForATag: {
@@ -99,20 +127,26 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parent, args) {
         const { tag_id } = args;
-        return db
-          .select("*")
-          .from("experiences")
-          .innerJoin(
-            "tag_experience_junction",
-            "experiences.experience_id",
-            "tag_experience_junction.experience_id"
-          )
-          .where("tag_experience_junction.tag_id", tag_id);
+
+        const promises = [
+          db
+            .select("*")
+            .from("experiences")
+            .innerJoin(
+              "tag_experience_junction",
+              "experiences.experience_id",
+              "tag_experience_junction.experience_id"
+            )
+            .where("tag_experience_junction.tag_id", tag_id),
+          checkIfTagExists(tag_id),
+        ];
+        return Promise.all(promises).then((experiences) => {
+          return experiences[0];
+        });
       },
     },
   },
 });
-
 const RootMutation = new GraphQLObjectType({
   name: "RootMutationType",
   description: "this is the data we can change or add to the database",
@@ -204,8 +238,9 @@ const RootMutation = new GraphQLObjectType({
           .where("experience_id", experience_id)
           .update(newExperienceData)
           .returning("*")
-          .then((experienceRows) => {
-            return experienceRows[0];
+          .then(([updatedExperience]) => {
+            if (updatedExperience) return updatedExperience;
+            return Promise.reject();
           });
       },
     },
@@ -220,8 +255,111 @@ const RootMutation = new GraphQLObjectType({
           .where("experience_id", experience_id)
           .increment("likes", inc_likes)
           .returning("*")
-          .then((experienceRows) => {
-            return experienceRows[0];
+          .then(([updatedExperience]) => {
+            if (updatedExperience) return updatedExperience;
+            return Promise.reject();
+          });
+      },
+    },
+    deleteComment: {
+      type: CommentType,
+      args: {
+        input: { type: DeleteCommentInputType },
+      },
+      resolve(parent, args) {
+        const { comment_id } = args.input;
+        return db("comments")
+          .where("comment_id", comment_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteImage: {
+      type: ImageType,
+      args: {
+        input: { type: DeleteImageInputType },
+      },
+      resolve(parent, args) {
+        const { image_id } = args.input;
+        return db("images")
+          .where("image_id", image_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteExperience: {
+      type: ExperienceType,
+      args: {
+        input: { type: DeleteExperienceInputType },
+      },
+      resolve(parent, args) {
+        const { experience_id } = args.input;
+        return db("experiences")
+          .where("experience_id", experience_id)
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    deleteTagFromExperience: {
+      type: TagType,
+      args: {
+        input: { type: DeleteTagFromExperienceType },
+      },
+      resolve(parent, args) {
+        const { experience_id, tag_id } = args.input;
+        return db("tag_experience_junction")
+          .where({ experience_id, tag_id })
+          .del()
+          .returning("*")
+          .then(([deleted]) => {
+            if (deleted === undefined) return Promise.reject();
+            return deleted;
+          });
+      },
+    },
+    updateCommentLikes: {
+      type: CommentType,
+      args: {
+        input: { type: UpdateCommentLikesType },
+      },
+      resolve(parent, args) {
+        const { comment_id, inc_likes } = args.input;
+        return db("comments")
+          .where("comment_id", comment_id)
+          .increment("likes", inc_likes)
+          .returning("*")
+          .then(([updatedComment]) => {
+            if (updatedComment) return updatedComment;
+            return Promise.reject();
+          });
+      },
+    },
+    addTagToExperience: {
+      type: TagType,
+      args: {
+        input: { type: AddTagToExperienceType },
+      },
+      resolve(parent, args) {
+        const { experience_id, tag_id } = args.input;
+        return db
+          .insert({ experience_id, tag_id })
+          .into("tag_experience_junction")
+          .returning("*")
+          .then(([addedTag]) => {
+            if (addedTag === undefined) return Promise.reject();
+            return addedTag;
           });
       },
     },
