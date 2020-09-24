@@ -91,3 +91,15 @@ exports.TagType = new GraphQLObjectType({
     },
   }),
 });
+
+exports.NewTagType = new GraphQLObjectType({
+  name: "NewTag",
+  fields: () => ({
+    tag_id: {
+      type: GraphQLID,
+    },
+    tag_text: {
+      type: GraphQLString,
+    },
+  }),
+});
