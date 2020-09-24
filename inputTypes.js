@@ -150,3 +150,15 @@ exports.UpdateCommentLikesType = new GraphQLInputObjectType({
     inc_likes: { type: GraphQLInt },
   }),
 });
+
+exports.AddTagToExperienceType = new GraphQLInputObjectType({
+  name: "AddTagToExperience",
+  fields: () => ({
+    experience_id: {
+      type: GraphQLID,
+    },
+    tag_id: {
+      type: GraphQLID,
+    },
+  }),
+});
