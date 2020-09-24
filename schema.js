@@ -22,6 +22,7 @@ const {
   DeleteTagFromExperienceType,
   UpdateCommentLikesType,
   AddTagToExperienceType,
+  AddNewTagType,
 } = require("./inputTypes");
 
 const RootQuery = new GraphQLObjectType({
@@ -356,6 +357,23 @@ const RootMutation = new GraphQLObjectType({
         return db
           .insert({ experience_id, tag_id })
           .into("tag_experience_junction")
+          .returning("*")
+          .then(([addedTag]) => {
+            if (addedTag === undefined) return Promise.reject();
+            return addedTag;
+          });
+      },
+    },
+    addNewTag: {
+      type: TagType,
+      args: {
+        input: { type: AddNewTagType },
+      },
+      resolve(parent, args) {
+        const { tag_text } = args.input;
+        return db
+          .insert({ tag_text })
+          .into("tags")
           .returning("*")
           .then(([addedTag]) => {
             if (addedTag === undefined) return Promise.reject();

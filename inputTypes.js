@@ -162,3 +162,12 @@ exports.AddTagToExperienceType = new GraphQLInputObjectType({
     },
   }),
 });
+
+exports.AddNewTagType = new GraphQLInputObjectType({
+  name: "AddTag",
+  fields: () => ({
+    tag_text: {
+      type: GraphQLString,
+    },
+  }),
+});
